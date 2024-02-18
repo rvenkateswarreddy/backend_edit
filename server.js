@@ -380,164 +380,306 @@ app.put("/editprofile/:id", middleware, async (req, res) => {
   }
 });
 // Add hostel mess details route
-app.post("/hostelmess/:id", middleware, async (req, res) => {
+// app.post("/hostelmess/:id", middleware, async (req, res) => {
+//   try {
+//     const userId = req.params.id;
+//     // Extract hostel mess details from request body
+//     const {
+//       days,
+//       leaveDays,
+//       nonVegCharge,
+//       vegCharge,
+//       totalFoodCharge,
+//       noonVegCharge,
+//       roomCharge,
+//       totalAmount,
+//     } = req.body;
+//     // Check if all required fields are provided
+//     if (
+//       !days ||
+//       !leaveDays ||
+//       !nonVegCharge ||
+//       !vegCharge ||
+//       !totalFoodCharge ||
+//       !noonVegCharge ||
+//       !roomCharge ||
+//       !totalAmount
+//     ) {
+//       return res
+//         .status(400)
+//         .json({ error: "All fields are required for hostel mess details" });
+//     }
+//     // Find user by ID
+//     const user = await registerDetails.findById(userId);
+//     if (!user) {
+//       return res.status(400).json({ error: "User not found" });
+//     }
+//     // Push the new hostel mess details to the array
+//     user.hostelMess.push({
+//       days,
+//       leaveDays,
+//       nonVegCharge,
+//       vegCharge,
+//       totalFoodCharge,
+//       noonVegCharge,
+//       roomCharge,
+//       totalAmount,
+//     });
+//     await user.save();
+//     return res.status(200).json({ message: "Hostel mess details added" });
+//   } catch (error) {
+//     console.error("Server error:", error);
+//     return res.status(500).json({ error: "Server error" });
+//   }
+// });
+// app.get("/hostelmess/:id", middleware, async (req, res) => {
+//   try {
+//     const user = await registerDetails.findById(req.params.id);
+
+//     if (!user) {
+//       return res.status(400).json({ error: "User not found" });
+//     }
+
+//     if (!user.hostelMess) {
+//       return res.status(404).json({ error: "Hostel mess details not found" });
+//     }
+
+//     return res.status(200).json({ data: user.hostelMess });
+//   } catch (error) {
+//     console.error("Server error:", error);
+//     return res.status(500).json({ error: "Server error" });
+//   }
+// });
+// // Edit hostel mess details route
+// // Update hostel mess details route
+// // Update hostel mess details route
+// app.put("/hostelmess/:userId/:messId", middleware, async (req, res) => {
+//   try {
+//     const userId = req.params.userId;
+//     const messId = req.params.messId;
+
+//     // Extract updated hostel mess details from request body
+//     const {
+//       days,
+//       leaveDays,
+//       nonVegCharge,
+//       vegCharge,
+//       totalFoodCharge,
+//       noonVegCharge,
+//       roomCharge,
+//       totalAmount,
+//     } = req.body;
+
+//     // Check if all required fields are provided
+//     if (
+//       !days ||
+//       !leaveDays ||
+//       !nonVegCharge ||
+//       !vegCharge ||
+//       !totalFoodCharge ||
+//       !noonVegCharge ||
+//       !roomCharge ||
+//       !totalAmount
+//     ) {
+//       return res
+//         .status(400)
+//         .json({ error: "All fields are required for hostel mess details" });
+//     }
+
+//     // Create an object with the updated hostel mess details
+//     const updatedMessDetails = {
+//       days,
+//       leaveDays,
+//       nonVegCharge,
+//       vegCharge,
+//       totalFoodCharge,
+//       noonVegCharge,
+//       roomCharge,
+//       totalAmount,
+//     };
+
+//     // Find user by ID and update the hostel mess details
+//     const user = await registerDetails.findByIdAndUpdate(
+//       userId,
+//       { $set: { "hostelMess.$[messId]": updatedMessDetails } },
+//       { new: true, arrayFilters: [{ "messId._id": messId }] }
+//     );
+
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     // Return only the updated hostelMess details
+//     return res.status(200).json({
+//       message: "Hostel mess details updated",
+//       hostelMess: user.hostelMess,
+//     });
+//   } catch (error) {
+//     console.error("Server error:", error);
+//     return res.status(500).json({ error: "Server error" });
+//   }
+// });
+
+// // Remove hostel mess details route
+// app.delete("/hostelmess/:id", middleware, async (req, res) => {
+//   try {
+//     const user = await registerDetails.findById(req.params.id);
+
+//     if (!user) {
+//       return res.status(400).json({ error: "User not found" });
+//     }
+
+//     if (!user.hostelMess) {
+//       return res.status(404).json({ error: "Hostel mess details not found" });
+//     }
+
+//     user.hostelMess = undefined;
+
+//     await user.save();
+
+//     return res.status(200).json({ message: "Hostel mess details removed" });
+//   } catch (error) {
+//     console.error("Server error:", error);
+//     return res.status(500).json({ error: "Server error" });
+//   }
+// });
+app.post("/attendance", middleware, async (req, res) => {
   try {
-    const userId = req.params.id;
-    // Extract hostel mess details from request body
-    const {
-      days,
-      leaveDays,
-      nonVegCharge,
-      vegCharge,
-      totalFoodCharge,
-      noonVegCharge,
-      roomCharge,
-      totalAmount,
-    } = req.body;
-    // Check if all required fields are provided
-    if (
-      !days ||
-      !leaveDays ||
-      !nonVegCharge ||
-      !vegCharge ||
-      !totalFoodCharge ||
-      !noonVegCharge ||
-      !roomCharge ||
-      !totalAmount
-    ) {
-      return res
-        .status(400)
-        .json({ error: "All fields are required for hostel mess details" });
-    }
+    const { userId, date, isPresent } = req.body;
+
     // Find user by ID
     const user = await registerDetails.findById(userId);
-    if (!user) {
-      return res.status(400).json({ error: "User not found" });
-    }
-    // Push the new hostel mess details to the array
-    user.hostelMess.push({
-      days,
-      leaveDays,
-      nonVegCharge,
-      vegCharge,
-      totalFoodCharge,
-      noonVegCharge,
-      roomCharge,
-      totalAmount,
-    });
-    await user.save();
-    return res.status(200).json({ message: "Hostel mess details added" });
-  } catch (error) {
-    console.error("Server error:", error);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
-app.get("/hostelmess/:id", middleware, async (req, res) => {
-  try {
-    const user = await registerDetails.findById(req.params.id);
-
-    if (!user) {
-      return res.status(400).json({ error: "User not found" });
-    }
-
-    if (!user.hostelMess) {
-      return res.status(404).json({ error: "Hostel mess details not found" });
-    }
-
-    return res.status(200).json({ data: user.hostelMess });
-  } catch (error) {
-    console.error("Server error:", error);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
-// Edit hostel mess details route
-// Update hostel mess details route
-// Update hostel mess details route
-app.put("/hostelmess/:userId/:messId", middleware, async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const messId = req.params.messId;
-
-    // Extract updated hostel mess details from request body
-    const {
-      days,
-      leaveDays,
-      nonVegCharge,
-      vegCharge,
-      totalFoodCharge,
-      noonVegCharge,
-      roomCharge,
-      totalAmount,
-    } = req.body;
-
-    // Check if all required fields are provided
-    if (
-      !days ||
-      !leaveDays ||
-      !nonVegCharge ||
-      !vegCharge ||
-      !totalFoodCharge ||
-      !noonVegCharge ||
-      !roomCharge ||
-      !totalAmount
-    ) {
-      return res
-        .status(400)
-        .json({ error: "All fields are required for hostel mess details" });
-    }
-
-    // Create an object with the updated hostel mess details
-    const updatedMessDetails = {
-      days,
-      leaveDays,
-      nonVegCharge,
-      vegCharge,
-      totalFoodCharge,
-      noonVegCharge,
-      roomCharge,
-      totalAmount,
-    };
-
-    // Find user by ID and update the hostel mess details
-    const user = await registerDetails.findByIdAndUpdate(
-      userId,
-      { $set: { "hostelMess.$[messId]": updatedMessDetails } },
-      { new: true, arrayFilters: [{ "messId._id": messId }] }
-    );
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Return only the updated hostelMess details
-    return res.status(200).json({
-      message: "Hostel mess details updated",
-      hostelMess: user.hostelMess,
-    });
+    // Add new attendance record
+    user.attendance.push({ date, isPresent });
+    await user.save();
+
+    return res.status(200).json({ message: "Attendance marked successfully" });
+  } catch (error) {
+    console.log("Server error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// New endpoint to retrieve attendance records for a user
+app.get("/attendance/:userId", middleware, async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find user by ID
+    const user = await registerDetails.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Return attendance records
+    return res.status(200).json({ attendance: user.attendance });
+  } catch (error) {
+    console.error("Server error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+app.get("/allattendances", async (req, res) => {
+  try {
+    const data = await registerDetails.find();
+    return res.status(200).json({ data });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "internal server error" });
+  }
+});
+app.post("/fees/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { feeAmount } = req.body;
+
+    const user = await registerDetails.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.fees.push({ feeAmount });
+    await user.save();
+
+    return res.status(200).json({ message: "Fee payment added successfully" });
   } catch (error) {
     console.error("Server error:", error);
     return res.status(500).json({ error: "Server error" });
   }
 });
 
-// Remove hostel mess details route
-app.delete("/hostelmess/:id", middleware, async (req, res) => {
+// Endpoint to retrieve fee payments for a user
+app.get("/fees/:userId", async (req, res) => {
   try {
-    const user = await registerDetails.findById(req.params.id);
+    const { userId } = req.params;
+
+    const user = await registerDetails.findById(userId);
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
-    if (!user.hostelMess) {
-      return res.status(404).json({ error: "Hostel mess details not found" });
+    return res.status(200).json({ fees: user.fees });
+  } catch (error) {
+    console.error("Server error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+app.post("/exam/:userId", middleware, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const {
+      Web_technology,
+      Software_Engineer,
+      Computer_graphics,
+      Big_data_analytics,
+      Artificial_intelligence,
+    } = req.body;
+
+    // Find user by ID
+    const user = await registerDetails.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
-    user.hostelMess = undefined;
+    // Add exam marks
+    user.exam.push({
+      Web_technology,
+      Software_Engineer,
+      Computer_graphics,
+      Big_data_analytics,
+      Artificial_intelligence,
+    });
 
     await user.save();
 
-    return res.status(200).json({ message: "Hostel mess details removed" });
+    return res.status(200).json({ message: "Exam marks added successfully" });
+  } catch (error) {
+    console.error("Server error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Endpoint to retrieve exam marks for a user
+app.get("/exam/:userId", middleware, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Find user by ID
+    const user = await registerDetails.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ exam: user.exam });
   } catch (error) {
     console.error("Server error:", error);
     return res.status(500).json({ error: "Server error" });

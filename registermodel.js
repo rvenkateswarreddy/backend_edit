@@ -16,18 +16,7 @@ const registerDetailsSchema = new mongoose.Schema({
   roomno: { type: String, required: false },
   yearOfStudy: { type: String, required: false },
   admissionNumber: { type: String, required: false },
-  hostelMess: [
-    {
-      days: { type: Number, required: true },
-      leaveDays: { type: Number, required: true },
-      nonVegCharge: { type: Number, required: true },
-      vegCharge: { type: Number, required: true },
-      totalFoodCharge: { type: Number, required: true },
-      noonVegCharge: { type: Number, required: true },
-      roomCharge: { type: Number, required: true },
-      totalAmount: { type: Number, required: true },
-    },
-  ],
+
   complaints: [
     {
       title: { type: String, required: true },
@@ -41,6 +30,42 @@ const registerDetailsSchema = new mongoose.Schema({
       description: { type: String, required: true },
       status: { type: String, default: "Pending" },
       date: { type: Date, default: Date.now },
+    },
+  ],
+  attendance: [
+    {
+      date: { type: Date, required: true },
+      isPresent: { type: Boolean, required: true },
+    },
+  ],
+  fees: [
+    {
+      feeAmount: { type: Number, required: true },
+      paymentDate: { type: Date, default: Date.now },
+    },
+  ],
+  exam: [
+    {
+      Web_technology: {
+        type: Number,
+        required: true,
+      },
+      Software_Engineer: {
+        type: Number,
+        required: true,
+      },
+      Computer_graphics: {
+        type: Number,
+        required: true,
+      },
+      Big_data_analytics: {
+        type: Number,
+        required: true,
+      },
+      Artificial_intelligence: {
+        type: Number,
+        required: true,
+      },
     },
   ],
 });
