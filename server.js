@@ -8,9 +8,7 @@ const port = process.env.PORT || 4000;
 const registerDetails = require("./registermodel");
 const middleware = require("./middleware");
 const cors = require("cors");
-
 dotEnv.config();
-
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
@@ -512,12 +510,10 @@ app.put("/hostelmess/:userId/:messId", middleware, async (req, res) => {
     }
 
     // Return only the updated hostelMess details
-    return res
-      .status(200)
-      .json({
-        message: "Hostel mess details updated",
-        hostelMess: user.hostelMess,
-      });
+    return res.status(200).json({
+      message: "Hostel mess details updated",
+      hostelMess: user.hostelMess,
+    });
   } catch (error) {
     console.error("Server error:", error);
     return res.status(500).json({ error: "Server error" });
