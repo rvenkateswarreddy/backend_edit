@@ -545,7 +545,7 @@ app.put("/editprofile/:id", middleware, async (req, res) => {
 // });
 app.post("/attendance", middleware, async (req, res) => {
   try {
-    const { userId, date, isPresent } = req.body;
+    const { userId, date, rollno, isPresent } = req.body;
 
     // Find user by ID
     const user = await registerDetails.findById(userId);
@@ -555,7 +555,7 @@ app.post("/attendance", middleware, async (req, res) => {
     }
 
     // Add new attendance record
-    user.attendance.push({ date, isPresent });
+    user.attendance.push({ date, rollno, isPresent });
     await user.save();
 
     return res.status(200).json({ message: "Attendance marked successfully" });
@@ -638,8 +638,9 @@ app.post("/exam/:userId", middleware, async (req, res) => {
       Web_technology,
       Software_Engineer,
       Computer_graphics,
-      Big_data_analytics,
-      Artificial_intelligence,
+      list1,
+      list2,
+      list3,
     } = req.body;
 
     // Find user by ID
@@ -650,13 +651,17 @@ app.post("/exam/:userId", middleware, async (req, res) => {
     }
 
     // Add exam marks
-    user.exam.push({
+    user.exam.fixedSubjects = {
       Web_technology,
       Software_Engineer,
       Computer_graphics,
-      Big_data_analytics,
-      Artificial_intelligence,
-    });
+    };
+
+    user.exam.selectableSubjects = {
+      list1,
+      list2,
+      list3,
+    };
 
     await user.save();
 

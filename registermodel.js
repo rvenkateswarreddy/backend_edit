@@ -35,6 +35,7 @@ const registerDetailsSchema = new mongoose.Schema({
   attendance: [
     {
       date: { type: Date, required: true },
+      rollno: { type: Number, required: true },
       isPresent: { type: Boolean, required: true },
     },
   ],
@@ -44,30 +45,43 @@ const registerDetailsSchema = new mongoose.Schema({
       paymentDate: { type: Date, default: Date.now },
     },
   ],
-  exam: [
-    {
-      Web_technology: {
-        type: Number,
-        required: true,
+  exam: {
+    fixedSubjects: {
+      Web_technology: { type: Number, required: false },
+      Software_Engineer: { type: Number, required: false },
+      Computer_graphics: { type: Number, required: false },
+    },
+    selectableSubjects: {
+      list1: {
+        type: {
+          type: String,
+          enum: [
+            "Artificial_intelligence",
+            "System_programming",
+            "Datamining_data_warehouse",
+          ],
+          required: false,
+        },
+        score: { type: Number, required: false },
       },
-      Software_Engineer: {
-        type: Number,
-        required: true,
+      list2: {
+        type: {
+          type: String,
+          enum: ["Cryptography", "Big_data_analytics", "Mobile_development"],
+          required: false,
+        },
+        score: { type: Number, required: false },
       },
-      Computer_graphics: {
-        type: Number,
-        required: true,
-      },
-      Big_data_analytics: {
-        type: Number,
-        required: true,
-      },
-      Artificial_intelligence: {
-        type: Number,
-        required: true,
+      list3: {
+        type: {
+          type: String,
+          enum: ["English", "Mathematics", "Political"],
+          required: false,
+        },
+        score: { type: Number, required: false },
       },
     },
-  ],
+  },
 });
 
 const registerDetails = mongoose.model(
