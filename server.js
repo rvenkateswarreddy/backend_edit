@@ -687,7 +687,7 @@ app.get("/exam/:userId", middleware, async (req, res) => {
     return res.status(200).json({ exam: user.exam });
   } catch (error) {
     console.error("Server error:", error);
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "internal Server error" });
   }
 });
 
