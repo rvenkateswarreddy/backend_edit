@@ -171,6 +171,25 @@ app.get("/allprofiles", middleware, async (req, res) => {
     console.log("error is", error);
   }
 });
+app.get("/allprofiles/:regNo", async (req, res) => {
+  try {
+    const regNo = req.params.regNo; // Accessing the value of 'regNo' route parameter
+
+    // Use the 'regNo' value to search for the user in the database
+    const user = await registerDetails.findOne({ admissionNumber: regNo });
+
+    // If user is not found, return a 404 error
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // If user is found, return the user details
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 app.get("/myprofile", middleware, async (req, res) => {
   try {
@@ -690,7 +709,15 @@ app.get("/exam/:userId", middleware, async (req, res) => {
     return res.status(500).json({ error: "internal Server error" });
   }
 });
-
+app.get("/allexams", async (req, res) => {
+  try {
+    const data = await registerDetails.find(req.user.exam);
+    return res.status(200).json({ data });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "internal server error" });
+  }
+});
 app.listen(port, () => {
   console.log(`Server is started at ${port}`);
 });
