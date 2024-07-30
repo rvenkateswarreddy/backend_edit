@@ -5,9 +5,27 @@ const registerDetailsSchema = new mongoose.Schema({
   secretkey: { type: String, required: false },
   fullname: { type: String, required: false },
   email: { type: String, required: true },
-  mobile: { type: String, required: true },
-  password: { type: String, required: true },
-  confirmpassword: { type: String, required: true },
+  mobile: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function (value) {
+        // Ensure phone number is exactly 10 digits
+        return /^\d{10}$/.test(value);
+      },
+      message: "Phone number must be exactly 10 digits long",
+    },
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: [6, "Password must be at least 6 characters long"],
+  },
+  confirmpassword: {
+    type: String,
+    required: true,
+    minlength: [6, "Confirm password must be at least 6 characters long"],
+  },
   gender: { type: String, required: false },
   permanentAddress: { type: String, required: false },
   course: { type: String, required: false },

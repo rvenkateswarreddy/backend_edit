@@ -155,7 +155,18 @@ app.post("/login", async (req, res) => {
       }
 
       // Include usertype in the response
-      return res.json({ token, usertype: user.usertype });
+      return res.json({
+        token,
+        usertype: user.usertype,
+        user: {
+          fullname: user.fullname,
+          userid: user._id,
+          email: user.email,
+          mobile: user.mobile,
+          gender: user.gender,
+          permanentAddress: user.permanentAddress,
+        },
+      });
     });
   } catch (error) {
     console.error("Server error:", error);
