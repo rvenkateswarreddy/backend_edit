@@ -164,7 +164,7 @@ app.post("/login", async (req, res) => {
           email: user.email,
           mobile: user.mobile,
           gender: user.gender,
-          usertype: user.usetype,
+          usertype: user.usertype,
           permanentAddress: user.permanentAddress,
         },
       });
